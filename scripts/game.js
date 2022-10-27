@@ -1,8 +1,14 @@
 const game = {
     score : 0,
-    currentMove : [],
+    currentGame : [],
     playerMove: [],
     choices: ["button1", "button2","button3","button4"],
-}
+};
 
-module.exports = {game} ;
+function newGame () {
+    game.score = 0;
+    game.currentGame = []
+    game.playerMove = []
+};
+
+module.exports = {game, newGame} ;
