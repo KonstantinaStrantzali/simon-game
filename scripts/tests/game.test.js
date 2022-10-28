@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
- const { game, newGame, showScore, addTurn, lightsOn} = require("../game");
+ const { game, newGame, showScore, addTurn, showTurns, lightsOn} = require("../game");
 
+ //sets the DOM once before all the test run
  beforeAll(() => {
      let fs = require("fs");
      let fileContents = fs.readFileSync("index.html", "utf-8");
@@ -24,6 +25,9 @@
      });
      test("choices key exists", () => {
          expect("choices" in game).toBe(true);
+     });
+     test("turnNumber key exist",() => {
+        expect("turnNumber" in game).toBe(true)
      });
      test("choices contain correct ids", () => {
          expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);
@@ -72,5 +76,17 @@
         let button = document.getElementById(game.currentGame[0]);
         lightsOn(game.currentGame[0]);
         expect(button.classList).toContain("light");
+    });
+    test("showTurn should update the game.turnNumber", () => {
+        game.turnNumber = 42;
+        showTurns()
+        expect(game.turnNumber).toBe(0)
+    })
+    test("expect data-listener to be true", () => {
+        newGame();
+        const elements = document.getElementsByClassName("circle");
+        for (let element of elements) {
+            expect(element.getAttribute("data-listener")).toEqual("true");
+        }
     });
  })
