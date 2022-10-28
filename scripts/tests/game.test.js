@@ -2,7 +2,9 @@
  * @jest-environment jsdom
  */
 
- const { game, newGame, showScore, addTurn, showTurns, lightsOn} = require("../game");
+ jest.spyOn(window, "alert").mockImplementation(() => { });
+
+ const { game, newGame, showScore, addTurn, showTurns, lightsOn, playerTurn} = require("../game");
 
  //sets the DOM once before all the test run
  beforeAll(() => {
@@ -89,4 +91,14 @@
             expect(element.getAttribute("data-listener")).toEqual("true");
         }
     });
+    test("should increment the score", () => {
+        game.playerMoves.push(game.currentGame[0])
+        playerTurn();
+        expect(game.score).toBe(1);
+    })
+    test("should call an alert if the move is wrong", () => {
+        game.playerMoves.push("wrong")
+        playerTurn();
+        expect(window.alert).toBeCalledWith("Wrong move!")
+    })
  })
